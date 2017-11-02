@@ -22,7 +22,7 @@ export async function get() {
 
     if (firstLine.length === 0 && secondLine.length === 0 && thirdLine.length === 0) reject(nothingFound);
 
-    const prices = 'Preise: Vegetarisch: 4,70 €, Noramle: 5,20 €, Suppe: 2 €';
+    const prices = 'Preise: Menü 1: 4,70 €, Menü 1 mit Salat oder Suppe oder Dessert: 6,30 €, Menü 2: 5,20 €, Menü 2 mit Salat oder Suppe oder Dessert: 6,80 €, Suppe/Dessert/Salat/Sättigungsbeilage: 1,60';
     
     const lunch = [firstLine, secondLine, thirdLine, prices];
     const res = arrayToLines(lunch);
