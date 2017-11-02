@@ -1,5 +1,7 @@
 import express from 'express';
 import lunch from './lunch';
+import showdown from 'showdown';
+const fs = require('fs');
 
 const app = express();
 
@@ -22,7 +24,23 @@ function loadFood(promise) {
 }
 
 app.get('/', (req, res) => {
-  res.send('<p>Read <a href="https://gitlab.com/fyre/lunchbot/blob/master/README.md">this</a> how to use the lunchBot API</p>');
+  const converter = new showdown.Converter();
+  const style = fs.readFileSync(__dirname + '/readme-style.css');
+  fs.readFile(__dirname + '/../README.md', 'utf-8', (err, data) => {
+    if (err) throw err;
+    const readme = converter.makeHtml(data);
+    const html = `
+      <html>
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <style>${style}</style>
+      </head>
+      <body>
+        <article class="markdown-body">${readme}</article>
+      </body>
+      </html>`;
+    res.send(html);
+  });
 });
 
 app.get('/get', async (req, res) => {
