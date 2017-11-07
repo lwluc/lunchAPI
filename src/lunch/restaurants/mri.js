@@ -2,6 +2,7 @@ import { getBody, nothingFound, arrayToLines } from '../utils';
 import * as  cheerio from 'cheerio';
 
 export const name = 'MRI-Casino';
+export const website = 'http://mensa.akk.uni-karlsruhe.de/';
 
 export async function get() {
   let body;

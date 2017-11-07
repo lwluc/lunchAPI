@@ -2,6 +2,7 @@ import { getBody, nothingFound, arrayToLinesMensaSpecial } from '../utils';
 import * as  cheerio from 'cheerio';
 
 export const name = 'Mensa';
+export const website = 'http://mensa.akk.uni-karlsruhe.de/';
 
 export async function get() {
   let body;

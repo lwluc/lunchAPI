@@ -2,6 +2,7 @@ import { getBody, nothingFound, arrayToLines } from '../utils';
 import * as  cheerio from 'cheerio';
 
 export const name = 'Die_Zwiebel';
+export const website = 'http://www.diezwiebel.net/';
 
 export async function get() {
   let body;

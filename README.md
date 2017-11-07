@@ -7,7 +7,8 @@ The Lunchbot
 Take a look at [mensa.js](src/lunch/restaurants/mensa.js) and write your own script crawling the lunch of your favorite place.  
 There are only two things your file should export:
 1. A `name`, preferable the one of the restaurant
-2. A `get()` function returning the lunch as string
+2. A `website` URL of the restaurant 
+3. A `get()` function returning the lunch as string
 
 Done!  
 (Of course you could use the functions offered in [utils.js](src/lunch/utils.js)).
@@ -20,4 +21,4 @@ Serves a JSON object with all restaurants and their dishes.
 Serves a JSON object containing all restaurants and their dishes which are set in the PATH-Param.
 
 **[/restaurants](http://localhost:3000/restaurants)**  
-Serves a list of supported restaurants as Array.
+Serves a list of supported restaurants as Objects with properties name and website.
