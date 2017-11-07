@@ -78,7 +78,7 @@ app.get('/get', async (req, res) => {
   res.send(result);
 });
 
-app.get('/getAll', async (req, res) => {
+app.get(['/getAll', '/getall'], async (req, res) => {
   let promise = [];
   let names = [];
   lunch.forEach(lib => {
