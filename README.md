@@ -15,11 +15,11 @@ Done!
 (Of course you could use the functions offered in [utils.js](src/lunch/utils.js)).
 
 ## The API
-**[/getAll](http://localhost:3000/getAll)**  
+**<a href="http://ka-lunch.de/api/getAll" target="blank">/getAll</a>**  
 Serves a JSON object with all restaurants and their dishes.
 
-**[/get?restaurants=Mensa,MRI-Casino,...](http://localhost:3000/get?restaurants=Mensa,MRI-Casino)**  
+**<a href="http://ka-lunch.de/api/get?restaurants=Mensa,MRI-Casino" target="blank">/get?restaurants=Mensa,MRI-Casino,...</a>**  
 Serves a JSON object containing all restaurants and their dishes which are set in the PATH-Param.
 
-**[/restaurants](http://localhost:3000/restaurants)**  
+**<a href="http://ka-lunch.de/api/restaurants" target="blank">/restaurants</a>**  
 Serves a list of supported restaurants as Objects with properties name and website.
