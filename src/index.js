@@ -106,7 +106,7 @@ app.get(['/getAll', '/getall'], async (req, res) => {
 app.get('/restaurants', async (req, res) => {
   let names = [];
   lunch.forEach(lib => {
-    names.push({name: lib.name, website: lib.website});
+    names.push({name: lib.name, website: lib.website, latlng: lib.latlng});
   });
 
   if (names.length === 0) return res.sendStatus(404);
