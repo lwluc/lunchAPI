@@ -3,8 +3,6 @@ import lunch from './lunch';
 import showdown from 'showdown';
 const fs = require('fs');
 
-const app = express();
-
 function reflect(promise) {
   return promise.then(value => { return {value, status: 'resolved' }; },
                       error => { return {error, status: 'rejected' }; });
@@ -22,6 +20,14 @@ function loadFood(promise) {
     resolve(food);
   });
 }
+
+const app = express();
+
+app.use(function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  next();
+});
 
 app.get('/', (req, res) => {
   const converter = new showdown.Converter();
