@@ -3,7 +3,7 @@ import * as  cheerio from 'cheerio';
 
 export const name = 'Mensa';
 export const website = 'http://mensa.akk.uni-karlsruhe.de/';
-export const latlng = { lat: 49.004956, lng: 8.425534 };
+export const latlng = { lat: 49.011719, lng: 8.416952 };
 
 export async function get() {
   let body;
