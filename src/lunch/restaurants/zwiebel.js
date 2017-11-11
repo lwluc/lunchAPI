@@ -1,7 +1,7 @@
 import { getBody, nothingFound, arrayToLines } from '../utils';
 import * as  cheerio from 'cheerio';
 
-export const name = 'Die_Zwiebel';
+export const name = 'Die Zwiebel';
 export const website = 'http://www.diezwiebel.net/';
 export const latlng = { lat: 49.008187, lng: 8.419894 };
 
