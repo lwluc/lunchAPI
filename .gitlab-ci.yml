@@ -1,0 +1,15 @@
+image: mhart/alpine-node:latest
+
+before_script:
+  - npm install
+  - apk update && apk add openssh || true
+  - apk update && apk add sshpass || true
+
+publish:
+  only:
+    - Uberspace
+  script:
+    - npm run build
+    - PROJECT_DIR=$(pwd) || true
+    - sshpass -p $SSH_PASS scp -o StrictHostKeyChecking=no  -r $PROJECT_DIR/dist eyezag@hamal.uberspace.de:/home/eyezag/devel/lunchAPI
+    - sshpass -p $SSH_PASS ssh -o StrictHostKeyChecking=no eyezag@hamal.uberspace.de 'tmux send-keys -t lunchAPI C-c; tmux send -t lunchAPI npm\ run\ serve ENTER'
