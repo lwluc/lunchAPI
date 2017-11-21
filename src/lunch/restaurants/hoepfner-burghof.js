@@ -1,4 +1,4 @@
-import { getBody, nothingFound, arrayToLines, replaceEscapedQutes } from '../utils';
+import { getBody, nothingFound, arrayToLines } from '../utils';
 import * as  cheerio from 'cheerio';
 
 export const name = 'Hoepfner Burghof';
@@ -27,6 +27,8 @@ export async function get() {
     lunch.forEach((el, index) => {
       lunch[index] = lunch[index] + ' ' + price[index];
     });
+
+    if (lunch.length === 0) reject(nothingFound);
 
     const res = arrayToLines(lunch);
     resolve(res);
