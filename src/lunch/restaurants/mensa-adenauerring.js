@@ -1,7 +1,7 @@
 import { getBody, nothingFound, arrayToLinesMensaSpecial } from '../utils';
 import * as  cheerio from 'cheerio';
 
-export const name = 'KIT Mensa';
+export const name = 'Mensa Adenauerring';
 export const website = 'http://mensa.akk.uni-karlsruhe.de/';
 export const latlng = { lat: 49.011719, lng: 8.416952 };
 
