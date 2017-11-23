@@ -4,8 +4,14 @@ export const nothingFound = 'lunch.length === 0';
 
 export const getBody = (url) => {
   return new Promise((resolve, reject) => {
-    request(url, (error, response, body) => {
-      if (error || response.statusCode !== 200) reject(error);
+    let options = {
+      url,
+      headers: {
+        'User-Agent': 'LunchBot/1.0.0 (https://ka-lunch.de)',
+      }
+    };
+    request(options, (error, response, body) => {
+      if (error || response.statusCode !== 200) reject({error, statusCode: response.statusCode});
       resolve(body);
     });
   });

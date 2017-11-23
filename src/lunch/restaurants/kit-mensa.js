@@ -1,7 +1,7 @@
 import { getBody, nothingFound, arrayToLinesMensaSpecial } from '../utils';
 import * as  cheerio from 'cheerio';
 
-export const name = 'Mensa';
+export const name = 'KIT Mensa';
 export const website = 'http://mensa.akk.uni-karlsruhe.de/';
 export const latlng = { lat: 49.011719, lng: 8.416952 };
 
@@ -10,7 +10,7 @@ export async function get() {
   try {
     body = await getBody('http://mensa.akk.uni-karlsruhe.de/?DATUM=heute&uni=1&schnell=1');
   } catch (err) {
-    console.log(err);
+    console.log(name, err);
   }
 
   const $ = cheerio.load(body);
@@ -25,7 +25,7 @@ export async function get() {
       if (el.length <= 2) lunch.splice(index, 1);
     });
     
-    if (lunch.length === 0) reject(nothingFound);
+    if (lunch.length === 0) return reject(nothingFound);
     const res = arrayToLinesMensaSpecial(lunch);
     resolve(res);
   });

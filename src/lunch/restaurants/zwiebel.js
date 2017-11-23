@@ -10,7 +10,7 @@ export async function get() {
   try {
     body = await getBody('http://www.diezwiebel.net/tageskarte.html');
   } catch (err) {
-    console.log(err);
+    console.log(name, err);
   }
 
   const $ = cheerio.load(body);
@@ -25,7 +25,7 @@ export async function get() {
       lunchPrice[i] = $(this).find('[class="price"]').text();
     });
   
-    if (lunchTitle.length === 0 || lunchText.length === 0) reject();
+    if (lunchTitle.length === 0 || lunchText.length === 0) return reject();
   
     let lunch = [];
     lunchText.forEach((el, index) => {
@@ -33,7 +33,7 @@ export async function get() {
         + ' ' + lunchPrice[index].replace(/Euro/g, '€'));
     });
 
-    if (lunch.length === 0) reject(nothingFound);
+    if (lunch.length === 0) return reject(nothingFound);
     const res = arrayToLines(lunch);
     resolve(res);
   });

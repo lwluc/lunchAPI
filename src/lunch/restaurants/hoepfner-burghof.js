@@ -10,7 +10,7 @@ export async function get() {
   try {
     body = await getBody('http://www.hoepfner-burghof.de/restaurant_wochenkarte--mittags-.php');
   } catch (err) {
-    console.log(err);
+    console.log(name, err);
   }
 
   const $ = cheerio.load(body);
@@ -28,7 +28,7 @@ export async function get() {
       lunch[index] = lunch[index] + ' ' + price[index];
     });
 
-    if (lunch.length === 0) reject(nothingFound);
+    if (lunch.length === 0) return reject(nothingFound);
 
     const res = arrayToLines(lunch);
     resolve(res);

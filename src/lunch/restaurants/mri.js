@@ -10,7 +10,7 @@ export async function get() {
   try {
     body = await getBody('http://casinocatering.de/');
   } catch (err) {
-    console.log(err);
+    console.log(name, err);
   }
 
   const $ = cheerio.load(body);
@@ -22,7 +22,7 @@ export async function get() {
     const secondLine = replaceTadAndSetLineBreaks($('.views-row.views-row-2.views-row-even').text());
     const thirdLine = $('.views-row.views-row-3.views-row-odd.views-row-last').text().trim().replace(/(?:\r\n|\r|\n)/g, ' ').replace(/ +(?= )/g,',').replace(':, ',': ');
 
-    if (firstLine.length === 0 && secondLine.length === 0 && thirdLine.length === 0) reject(nothingFound);
+    if (firstLine.length === 0 && secondLine.length === 0 && thirdLine.length === 0) return reject(nothingFound);
 
     const prices = 'Preise: Menü 1: 4,70 €, Menü 1 mit Salat oder Suppe oder Dessert: 6,30 €, Menü 2: 5,20 €, Menü 2 mit Salat oder Suppe oder Dessert: 6,80 €, Suppe/Dessert/Salat/Sättigungsbeilage: 1,60';
     
