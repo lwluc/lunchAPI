@@ -1,4 +1,4 @@
-import { getBody, nothingFound, arrayToLines } from '../utils';
+import { getBody, nothingFound, replaceSpaces } from '../utils';
 import * as  cheerio from 'cheerio';
 
 export const name = 'Hoepfner Burghof';
@@ -16,21 +16,19 @@ export async function get() {
   const $ = cheerio.load(body);
 
   return new Promise((resolve, reject) => {
-    let lunch = [];
+    let food = [];
     let price = [];
 
     $('table[border="0"]').find('tr').each(function(i, elem) {
-      lunch[i] = $(this).find('td[style="width: 900px; height: 20px;"]').find('span').text();
+      food[i] = $(this).find('td[style="width: 900px; height: 20px;"]').find('span').text();
       price[i] = $(this).find('td[style="width: 80px; height: 25px; text-align: right;"]').find('span').text();
     });
 
-    lunch.forEach((el, index) => {
-      lunch[index] = lunch[index] + ' ' + price[index];
-    });
+    if (food.length === 0 || price.length === 0) return reject(nothingFound);
 
-    if (lunch.length === 0) return reject(nothingFound);
+    food = replaceSpaces(food);
+    price = replaceSpaces(price);
 
-    const res = arrayToLines(lunch);
-    resolve(res);
+    resolve({food, price});
   });
 }

@@ -29,6 +29,10 @@ export function arrayToLines(array) {
   return result.substring(0, result.length - 1);
 }
 
+export function replaceSpaces(array) {
+  return array.map(el => el = el.replace(/  +/g, ' ').trim());
+}
+
 export function arrayToLinesMensaSpecial(array) {
   let result = '';
   array.forEach((el, index) => {

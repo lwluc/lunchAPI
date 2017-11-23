@@ -1,4 +1,4 @@
-import { getBody, nothingFound, arrayToLinesMensaSpecial } from '../utils';
+import { getBody, nothingFound, replaceSpaces } from '../utils';
 import * as  cheerio from 'cheerio';
 
 export const name = 'Mensa Adenauerring';
@@ -16,17 +16,21 @@ export async function get() {
   const $ = cheerio.load(body);
 
   return new Promise((resolve, reject) => {
-    let lunch = [];
-    $('[valign="top"]').find('td').each(function(i, elem) {
-      lunch[i] = $(this).text();
-    });
-
-    lunch.forEach((el, index) => {
-      if (el.length <= 2) lunch.splice(index, 1);
+    let food = [];
+    let price = [];
+    $('[valign="top"]').each(function(i, elem) {
+      food[i] = $(this).find('td').first().text();
+      price[i] = $(this).find('td').last().text();
     });
     
-    if (lunch.length === 0) return reject(nothingFound);
-    const res = arrayToLinesMensaSpecial(lunch);
-    resolve(res);
+    food.forEach((el, index) => {
+      if (el.length <= 2) food.splice(index, 1);
+    });
+
+    if (food.length === 0 || price.length === 0) return reject(nothingFound);
+
+    food = replaceSpaces(food);
+    price = replaceSpaces(price);
+    resolve({food, price});
   });
 }

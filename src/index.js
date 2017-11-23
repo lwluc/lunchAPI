@@ -11,7 +11,7 @@ function reflect(promise) {
 function loadFood(promise) {
   return new Promise(async (resolve, reject) => {
     let food = [];
-    await Promise.all(promise.map(reflect)).then(function(results) {
+    await Promise.all(promise.map(reflect)).then(results => {
       results.filter(obj => {
         if (obj.status === 'resolved') food.push(obj.value);
         else food.push('Ups, die Küche scheint heute kalt zu bleiben!');
