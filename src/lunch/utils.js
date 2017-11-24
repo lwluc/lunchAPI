@@ -43,8 +43,8 @@ export function arrayToLinesMensaSpecial(array) {
 }
 
 export function removeEmtpyElementsAndSpaces(lunch) {
-  lunch = lunch.filter(obj => obj && obj.food && obj.food.replace(/\s/g, '').length > 0 
-    && obj.price && obj.price.replace(/\s/g, '').length > 0);
+  lunch = lunch.filter(obj => obj && obj.food && obj.food.replace(/\s/g, '').length > 0 && obj.price);
+    // && obj.price && obj.price.replace(/\s/g, '').length > 0);
 
   return lunch.map(obj => obj = {food: obj.food.replace(/  +/g, ' ').trim(), price: obj.price.replace(/  +/g, ' ').trim() });  
 }
