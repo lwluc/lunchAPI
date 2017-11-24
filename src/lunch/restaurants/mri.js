@@ -1,9 +1,9 @@
-import { getBody, nothingFound, replaceSpaces } from '../utils';
+import { getBody, nothingFound } from '../utils';
 import * as  cheerio from 'cheerio';
 
 export const name = 'MRI-Casino';
 export const website = 'http://www.casinocatering.de/';
-export const latlng = { lat: 49.012440, lng: 8.425490 };
+export const latlng = { lat: 49.013265, lng: 8.426129 };
 
 export async function get() {
   let body;
@@ -24,15 +24,20 @@ export async function get() {
 
     if (firstLine.length === 0 && secondLine.length === 0 && thirdLine.length === 0) return reject(nothingFound);
 
-    let price = ['Preise: Menü 1: 4,70 €, Menü 1 mit Salat oder Suppe oder Dessert: 6,30 €, Menü 2: 5,20 €, Menü 2 mit Salat oder Suppe oder Dessert: 6,80 €, Suppe/Dessert/Salat/Sättigungsbeilage: 1,60'];
+    let priceM1 = 'Preise: Menü 1: 4,70 €, Menü 1 mit Salat oder Suppe oder Dessert: 6,30 €';
+    let priceM2 = 'Menü 2: 5,20 €, Menü 2 mit Salat oder Suppe oder Dessert: 6,80 €';
+    let priceOthers = 'Suppe/Dessert/Salat/Sättigungsbeilage: 1,60';
+
     
-    let food = [firstLine, secondLine, thirdLine];
-    food = replaceSpaces(food);
-    price = replaceSpaces(price);
-    resolve({food, price});
+    let food = [{food: firstLine, price: priceM1}, 
+      {food: secondLine, price: priceM2},
+      {food: thirdLine, price: priceOthers}];
+
+    resolve(food);
   });
 }
 
 const replaceTadAndSetLineBreaks = (data) => {
-  return data.replace(/\n/g, '#').replace(/\s\s+/g, ' ').replace(/##/g, '\n').replace(/#/g, '');
+  /* eslint no-regex-spaces: 0 */
+  return data.replace(/\n/g, '#').replace(/\s\s+/g, ' ').replace(/##/g, '\n').replace(/#/g, '').replace(/  +/g, ' ').trim();
 };

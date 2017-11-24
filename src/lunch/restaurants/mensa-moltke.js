@@ -1,4 +1,4 @@
-import { getBody, nothingFound, replaceSpaces } from '../utils';
+import { getBody, nothingFound, removeEmtpyElementsAndSpaces } from '../utils';
 import * as  cheerio from 'cheerio';
 
 export const name = 'Mensa Moltke';
@@ -27,8 +27,16 @@ export async function get() {
 
     if (food.length === 0 || price.length === 0) return reject(nothingFound);
 
-    food = replaceSpaces(food);
-    price = replaceSpaces(price);
-    resolve({food, price});
+    let res = [];
+    food = food.forEach((el, index) => {
+      if (el ==='zu jedem Gericht ein Salat und eine Banane') {
+        food.splice(index, 1);
+        price.splice(index, 1);
+      }
+      res.push({food: el, price: price[index]});
+    });
+
+    let lunch = removeEmtpyElementsAndSpaces(res);
+    resolve(lunch);
   });
 }

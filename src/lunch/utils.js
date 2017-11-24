@@ -29,10 +29,6 @@ export function arrayToLines(array) {
   return result.substring(0, result.length - 1);
 }
 
-export function replaceSpaces(array) {
-  return array.map(el => el = el.replace(/  +/g, ' ').trim());
-}
-
 export function arrayToLinesMensaSpecial(array) {
   let result = '';
   array.forEach((el, index) => {
@@ -44,4 +40,11 @@ export function arrayToLinesMensaSpecial(array) {
   });
 
   return result.substring(0, result.length - 1);
+}
+
+export function removeEmtpyElementsAndSpaces(lunch) {
+  lunch = lunch.filter(obj => obj && obj.food && obj.food.replace(/\s/g, '').length > 0 
+    && obj.price && obj.price.replace(/\s/g, '').length > 0);
+
+  return lunch.map(obj => obj = {food: obj.food.replace(/  +/g, ' ').trim(), price: obj.price.replace(/  +/g, ' ').trim() });  
 }

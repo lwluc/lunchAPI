@@ -1,4 +1,4 @@
-import { getBody, nothingFound, replaceSpaces } from '../utils';
+import { getBody, nothingFound, removeEmtpyElementsAndSpaces } from '../utils';
 import * as  cheerio from 'cheerio';
 
 export const name = 'Die Zwiebel';
@@ -34,8 +34,8 @@ export async function get() {
 
     price = price.map(p => p = p.replace(/Euro/g, '€'));
 
-    food = replaceSpaces(food);
-    price = replaceSpaces(price);
-    resolve({food, price});
+    food = food.map((el, index) => { return {food: el, price: price[index]}; });
+    let lunch = removeEmtpyElementsAndSpaces(food);
+    resolve(lunch);
   });
 }
