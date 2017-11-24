@@ -1,0 +1,16 @@
+doctype html
+html
+	head
+		style
+			include style.css
+		title LunchBot Menu
+	body
+		div.container
+			h1 LunchBot Menu
+			ul
+				for obj in lunch
+					li
+						span= obj.restaurant
+							ul
+								for l in obj.lunch
+									li= l.food + ' ' + l.price

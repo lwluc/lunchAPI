@@ -1,7 +1,9 @@
 import express from 'express';
 import lunch from './lunch';
 import showdown from 'showdown';
+const favicon = require('serve-favicon');
 const fs = require('fs');
+const path = require('path');
 
 function reflect(promise) {
   return promise.then(value => { return {value, status: 'resolved' }; },
@@ -21,7 +23,34 @@ function loadFood(promise) {
   });
 }
 
+function loadAll() {
+  return new Promise(async (resolve, reject) => {
+    let promise = [];
+    let names = [];
+    lunch.forEach(lib => {
+      promise.push(lib.get());
+      names.push(lib.name);
+    });
+  
+    if (promise.length === 0 || names.length === 0) return reject(404);
+  
+    let result = [];
+    try {
+      const food = await loadFood(promise);
+      
+      names.forEach((restaurant, index) => {
+        result.push({restaurant, lunch: food[index]});
+      });
+    } catch (err) {
+      console.log(err);
+      return reject(404);
+    }
+    resolve(result);
+  });
+}
+
 const app = express();
+app.use(favicon(path.join(__dirname, 'images', 'favicon.ico')));
 
 app.use(function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
@@ -85,27 +114,12 @@ app.get('/get', async (req, res) => {
 });
 
 app.get(['/getAll', '/getall'], async (req, res) => {
-  let promise = [];
-  let names = [];
-  lunch.forEach(lib => {
-    promise.push(lib.get());
-    names.push(lib.name);
-  });
-
-  if (promise.length === 0 || names.length === 0) return res.sendStatus(404);
-
-  let result = [];
+  let result;
   try {
-    const food = await loadFood(promise);
-    
-    names.forEach((restaurant, index) => {
-      result.push({restaurant, lunch: food[index]});
-    });
+    result = await loadAll();
   } catch (err) {
-    console.log(err);
     return res.status(404).send({NothingFound: 'Ups, die Küche scheint heute kalt zu bleiben!'});
   }
-
   res.send(result);
 });
 
@@ -118,6 +132,18 @@ app.get('/restaurants', async (req, res) => {
   if (names.length === 0) return res.sendStatus(404);
 
   res.send(names);
+});
+
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, 'views'));
+app.get('/menu', async (req, res) => {
+  let result;
+  try {
+    result = await loadAll();
+  } catch (err) {
+    return res.status(404).send({NothingFound: 'Ups, die Küche scheint heute kalt zu bleiben!'});
+  }
+  res.render('menu', {lunch: result});
 });
 
 app.listen(3000, () => {

@@ -23,3 +23,6 @@ Serves a JSON object containing all restaurants and their dishes which are set i
 
 **<a href="http://ka-lunch.de/api/restaurants" target="blank">/restaurants</a>**  
 Serves a list of supported restaurants as Objects with properties name and website.
+
+**<a href="http://ka-lunch.de/api/menu" target="blank">/menu</a>**  
+Serve all from /getAll but as html
