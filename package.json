@@ -5,7 +5,7 @@
   "main": "./src/index.js",
   "scripts": {
     "start": "nodemon src/index.js --exec babel-node",
-    "build": "babel src -d dist; cp src/readme-style.css dist/readme-style.css; cp -r src/images dist; cp -r src/views dist",
+    "build": "babel src -d dist; cp src/utils/readme-style.css dist/readme-style.css; cp -r src/images dist; cp -r src/views dist",
     "serve": "node dist/index.js"
   },
   "author": "luc",
