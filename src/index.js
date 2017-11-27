@@ -1,9 +1,11 @@
 import express from 'express';
 import lunch from './lunch';
 import showdown from 'showdown';
+import { logger, ERROR } from './utils';
 const favicon = require('serve-favicon');
 const fs = require('fs');
 const path = require('path');
+const morgan = require('morgan');
 
 function reflect(promise) {
   return promise.then(value => { return {value, status: 'resolved' }; },
@@ -12,14 +14,15 @@ function reflect(promise) {
 
 function loadFood(promise) {
   return new Promise(async (resolve, reject) => {
-    let food = [];
+    let lunch = [];
     await Promise.all(promise.map(reflect)).then(results => {
       results.filter(obj => {
-        if (obj.status === 'resolved') food.push(obj.value);
-        else food.push('Ups, die Küche scheint heute kalt zu bleiben!');
+        if (obj.status === 'resolved') lunch.push(obj.value);
+        else lunch.push([{food: 'Ups, die Küche scheint heute kalt zu bleiben!', price: ' '}]);
       });
     });
-    resolve(food);
+    if (lunch.length === 0) reject('Could not load any lunch');
+    resolve(lunch);
   });
 }
 
@@ -42,7 +45,7 @@ function loadAll() {
         result.push({restaurant, lunch: food[index]});
       });
     } catch (err) {
-      console.log(err);
+      logger.error(`${ERROR.couldNotLoadLAllLunch}`, err);
       return reject(404);
     }
     resolve(result);
@@ -58,9 +61,19 @@ app.use(function(req, res, next) {
   next();
 });
 
+// log only 4xx and 5xx responses to console
+app.use(morgan('dev', {
+  skip: function (req, res) { return res.statusCode < 400; }
+}));
+
+// log all requests to access.log
+app.use(morgan('common', {
+  stream: fs.createWriteStream(path.join(__dirname, '/../access.log'), {flags: 'a'})
+}));
+
 app.get('/', (req, res) => {
   const converter = new showdown.Converter();
-  const style = fs.readFileSync(__dirname + '/readme-style.css');
+  const style = fs.readFileSync(__dirname + '/utils/readme-style.css');
   fs.readFile(__dirname + '/../README.md', 'utf-8', (err, data) => {
     if (err) throw err;
     const readme = converter.makeHtml(data);
@@ -106,7 +119,7 @@ app.get('/get', async (req, res) => {
       result.push({restaurant, lunch: food[index]});
     });
   } catch (err) {
-    console.log(err);
+    logger.error(`${ERROR.couldNotLoadLunch}`, err);
     return res.sendStatus(404);
   }
 
@@ -143,9 +156,10 @@ app.get('/menu', async (req, res) => {
   } catch (err) {
     return res.status(404).send({NothingFound: 'Ups, die Küche scheint heute kalt zu bleiben!'});
   }
+
   res.render('menu', {lunch: result});
 });
 
 app.listen(3000, () => {
-  console.log('LunchAPI app listening on port 3000!');
+  logger.info('LunchAPI app listening on port 3000!');
 });

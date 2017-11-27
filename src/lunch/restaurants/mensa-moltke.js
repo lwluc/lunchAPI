@@ -1,5 +1,6 @@
 import { getBody, nothingFound, removeEmtpyElementsAndSpaces } from '../utils';
 import * as  cheerio from 'cheerio';
+import { logger, ERROR } from '../../utils/index';
 
 export const name = 'Mensa Moltke';
 export const website = 'http://www.sw-ka.de/de/essen/?mensa=2';
@@ -10,7 +11,7 @@ export async function get() {
   try {
     body = await getBody('http://www.sw-ka.de/de/essen/?mensa=2');
   } catch (err) {
-    console.log(name, err);
+    logger.error(`${ERROR.couldNotLoadBody} ${name}`, err);
   }
 
   const $ = cheerio.load(body);

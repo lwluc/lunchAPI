@@ -1,5 +1,6 @@
 import { getBody, nothingFound, removeEmtpyElementsAndSpaces } from '../utils';
 import * as  cheerio from 'cheerio';
+import { logger, ERROR } from '../../utils/index';
 
 export const name = 'Die Zwiebel';
 export const website = 'http://www.diezwiebel.net/';
@@ -10,7 +11,7 @@ export async function get() {
   try {
     body = await getBody('http://www.diezwiebel.net/tageskarte.html');
   } catch (err) {
-    console.log(name, err);
+    logger.error(`${ERROR.couldNotLoadBody} ${name}`, err);
   }
 
   const $ = cheerio.load(body);

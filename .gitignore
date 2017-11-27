@@ -5,3 +5,8 @@ node_modules/*
 
 # Tranpiled
 /dist
+
+# Logging
+access.log
+server.log
+error.log
