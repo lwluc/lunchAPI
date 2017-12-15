@@ -11,7 +11,7 @@ export const getBody = (url) => {
       }
     };
     request(options, (error, response, body) => {
-      if (error || response.statusCode !== 200) reject({error, statusCode: response.statusCode});
+      if (error || (response.statusCode && response.statusCode !== 200)) reject({error, statusCode: response.statusCode});
       resolve(body);
     });
   });
