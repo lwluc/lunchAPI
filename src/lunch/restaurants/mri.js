@@ -25,9 +25,9 @@ export async function get() {
 
     if (firstLine.length === 0 && secondLine.length === 0 && thirdLine.length === 0) return reject(nothingFound);
 
-    let priceM1 = 'Preise: Menü 1: 4,70 €, Menü 1 mit Salat oder Suppe oder Dessert: 6,30 €';
-    let priceM2 = 'Menü 2: 5,20 €, Menü 2 mit Salat oder Suppe oder Dessert: 6,80 €';
-    let priceOthers = 'Suppe/Dessert/Salat/Sättigungsbeilage: 1,60';
+    let priceM1 = 'Preise: Menü 1: 4,90 €, Menü 1 mit Salat oder Suppe oder Dessert: 6,60 €';
+    let priceM2 = 'Menü 2: 5,40 €, Menü 2 mit Salat oder Suppe oder Dessert: 7,10 €';
+    let priceOthers = 'Suppe/Dessert/Salat/Sättigungsbeilage: 1,70';
 
     
     let food = [{food: firstLine, price: priceM1}, 
