@@ -7,18 +7,15 @@ export const website = 'http://www.alinacafe.de/';
 export const latlng = { lat: 49.005733, lng: 8.429576 };
 
 export async function get() {
-  let body;
-  try {
-    body = await getBody('http://www.alinacafe.de/lecker/wochenkarte/');
-  } catch (err) {
-    logger.error(`${ERROR.couldNotLoadBody} ${name}`, err);
-  }
+  const body = await getBody('http://www.alinacafe.de/lecker/wochenkarte/')
+                      .catch(err => logger.error(`${ERROR.couldNotLoadBody} ${name}`, err));
 
   const $ = cheerio.load(body);
 
   return new Promise((resolve, reject) => {
     let food = [];
 
+    // eslint-disable-next-line no-unused-vars
     $('div[class="entry-summary tafel"]').find('p').each(function(i, elem) {
       food[i] = $(this).text();
     });
@@ -40,7 +37,7 @@ export async function get() {
     });
 
     // If no price is give the price should be a space, otherwise it will be filter out
-    let price = food.map(el => el = ' ');
+    let price = food.map(el => el = ' '); // eslint-disable-line no-unused-vars
 
     food = food.map((el, index) => { return {food: el, price: price[index]}; });
     let lunch = removeEmtpyElementsAndSpaces(food);

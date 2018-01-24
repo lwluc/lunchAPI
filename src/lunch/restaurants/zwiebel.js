@@ -7,12 +7,8 @@ export const website = 'http://www.diezwiebel.net/';
 export const latlng = { lat: 49.008187, lng: 8.419894 };
 
 export async function get() {
-  let body;
-  try {
-    body = await getBody('http://www.diezwiebel.net/tageskarte.html');
-  } catch (err) {
-    logger.error(`${ERROR.couldNotLoadBody} ${name}`, err);
-  }
+  const body = await getBody('http://www.diezwiebel.net/tageskarte.html')
+                      .catch(err => logger.error(`${ERROR.couldNotLoadBody} ${name}`, err));
 
   const $ = cheerio.load(body);
 
@@ -20,7 +16,7 @@ export async function get() {
     let lunchTitle = [];
     let lunchText = [];
     let price = [];
-    $('article').each(function(i, elm) {
+    $('article').each(function(i, elm) { // eslint-disable-line no-unused-vars
       lunchTitle[i] = $(this).find('h5').text();
       lunchText[i] = $(this).find('[class="text"]').text();
       price[i] = $(this).find('[class="price"]').text();

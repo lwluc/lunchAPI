@@ -1,56 +1,11 @@
 import express from 'express';
 import lunch from './lunch';
 import showdown from 'showdown';
-import { logger, ERROR } from './utils';
+import { logger, ERROR, loadFood, loadAll } from './utils';
 const favicon = require('serve-favicon');
 const fs = require('fs');
 const path = require('path');
 const morgan = require('morgan');
-
-function reflect(promise) {
-  return promise.then(value => { return {value, status: 'resolved' }; },
-                      error => { return {error, status: 'rejected' }; });
-}
-
-function loadFood(promise) {
-  return new Promise(async (resolve, reject) => {
-    let lunch = [];
-    await Promise.all(promise.map(reflect)).then(results => {
-      results.filter(obj => {
-        if (obj.status === 'resolved') lunch.push(obj.value);
-        else lunch.push([{food: 'Ups, die Küche scheint heute kalt zu bleiben!', price: ' '}]);
-      });
-    });
-    if (lunch.length === 0) reject('Could not load any lunch');
-    resolve(lunch);
-  });
-}
-
-function loadAll() {
-  return new Promise(async (resolve, reject) => {
-    let promise = [];
-    let names = [];
-    lunch.forEach(lib => {
-      promise.push(lib.get());
-      names.push(lib.name);
-    });
-  
-    if (promise.length === 0 || names.length === 0) return reject(404);
-  
-    let result = [];
-    try {
-      const food = await loadFood(promise);
-      
-      names.forEach((restaurant, index) => {
-        result.push({restaurant, lunch: food[index]});
-      });
-    } catch (err) {
-      logger.error(`${ERROR.couldNotLoadLAllLunch}`, err);
-      return reject(404);
-    }
-    resolve(result);
-  });
-}
 
 const app = express();
 app.use(favicon(path.join(__dirname, 'images', 'favicon.ico')));
@@ -127,12 +82,9 @@ app.get('/get', async (req, res) => {
 });
 
 app.get(['/getAll', '/getall'], async (req, res) => {
-  let result;
-  try {
-    result = await loadAll();
-  } catch (err) {
+  const result = await loadAll().catch(err => { // eslint-disable-line no-unused-vars
     return res.status(404).send({NothingFound: 'Ups, die Küche scheint heute kalt zu bleiben!'});
-  }
+  });
   res.send(result);
 });
 
@@ -150,12 +102,9 @@ app.get('/restaurants', async (req, res) => {
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 app.get('/menu', async (req, res) => {
-  let result;
-  try {
-    result = await loadAll();
-  } catch (err) {
+  const result = await loadAll().catch(err => { // eslint-disable-line no-unused-vars
     return res.status(404).send({NothingFound: 'Ups, die Küche scheint heute kalt zu bleiben!'});
-  }
+  });
 
   res.render('menu', {lunch: result});
 });

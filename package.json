@@ -6,6 +6,7 @@
   "scripts": {
     "start": "nodemon src/index.js --exec babel-node",
     "build": "babel src -d dist; cp src/utils/readme-style.css dist/utils/readme-style.css; cp -r src/images dist; cp -r src/views dist",
+    "lint": "eslint src/**",
     "serve": "node dist/index.js"
   },
   "author": "luc",
@@ -15,10 +16,11 @@
     "cheerio": "^1.0.0-rc.2",
     "express": "^4.16.2",
     "morgan": "^1.9.0",
+    "npm-check-updates": "^2.14.0",
     "pug": "^2.0.0-rc.4",
     "request": "^2.83.0",
     "serve-favicon": "^2.4.5",
-    "showdown": "^1.8.2",
+    "showdown": "^1.8.6",
     "winston": "^3.0.0-rc1"
   },
   "devDependencies": {
@@ -26,6 +28,6 @@
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
-    "nodemon": "^1.12.1"
+    "nodemon": "^1.14.11"
   }
 }

@@ -7,12 +7,8 @@ export const website = 'http://www.casinocatering.de/';
 export const latlng = { lat: 49.013265, lng: 8.426129 };
 
 export async function get() {
-  let body;
-  try {
-    body = await getBody('http://casinocatering.de/');
-  } catch (err) {
-    logger.error(`${ERROR.couldNotLoadBody} ${name}`, err);
-  }
+  const body = await getBody('http://casinocatering.de/')
+                      .catch(err => logger.error(`${ERROR.couldNotLoadBody} ${name}`, err));
 
   const $ = cheerio.load(body);
 

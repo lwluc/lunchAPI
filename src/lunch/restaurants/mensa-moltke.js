@@ -7,12 +7,8 @@ export const website = 'http://www.sw-ka.de/de/essen/?mensa=2';
 export const latlng = { lat: 49.014500, lng: 8.391060 };
 
 export async function get() {
-  let body;
-  try {
-    body = await getBody('http://www.sw-ka.de/de/essen/?mensa=2');
-  } catch (err) {
-    logger.error(`${ERROR.couldNotLoadBody} ${name}`, err);
-  }
+  const body = await getBody('http://www.sw-ka.de/de/essen/?mensa=2')
+                      .catch(err => logger.error(`${ERROR.couldNotLoadBody} ${name}`, err));
 
   const $ = cheerio.load(body);
 
@@ -20,7 +16,7 @@ export async function get() {
     let food = [];
     let price = [];
 
-    $('div[id="c2"]').find('div[id="fragment-c2-1"]').find('table[cellspacing="0"]').find('td[class="mensadata"]').find('tr').each(function(i, elem) {
+    $('div[id="c2"]').find('div[id="fragment-c2-1"]').find('table[cellspacing="0"]').find('td[class="mensadata"]').find('tr').each(function(i, elem) { // eslint-disable-line no-unused-vars
       let f = $(this).find('td[valign="top"]').find('span[class="bg"]');
       food[i] = f.find('b').text() + ' ' +  f.find('span').text();
       price[i] = $(this).find('td[style="text-align: right;vertical-align:bottom;"]').find('span[class="bgp price_1"]').text();
