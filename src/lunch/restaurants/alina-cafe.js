@@ -1,4 +1,4 @@
-import { getBody, nothingFound, removeEmtpyElementsAndSpaces } from '../utils';
+import { getBody, nothingFound, removeEmptyElementsAndSpaces } from '../utils';
 import * as  cheerio from 'cheerio';
 import { logger, ERROR } from '../../utils/index';
 
@@ -22,25 +22,27 @@ export async function get() {
 
     if (food.length === 0) reject(nothingFound);
 
-    const today = new Date();
-    const weekDay = today.getDay();
-
-    food = food.filter(el => {
-      switch (weekDay) {
-        case 1: if (el.includes('Montag')) return el.replace('Montag: ', ''); break;
-        case 2: if (el.includes('Dienstag')) return el.replace('Dienstag: ', ''); break;
-        case 3: if (el.includes('Mittwoch')) return el.replace('Mittwoch: ', ''); break;
-        case 4: if (el.includes('Donnerstag')) return el.replace('Donnerstag: ', ''); break;
-        case 5: if (el.includes('Freitag')) return el.replace('Freitag: ', ''); break;
-        default: return el;
-      }
-    });
+    food = food.map(removeWeekDay);
 
     // If no price is give the price should be a space, otherwise it will be filter out
     let price = food.map(el => el = ' '); // eslint-disable-line no-unused-vars
 
     food = food.map((el, index) => { return {food: el, price: price[index]}; });
-    let lunch = removeEmtpyElementsAndSpaces(food);
+    let lunch = removeEmptyElementsAndSpaces(food);
     resolve(lunch);
   });
 }
+
+const removeWeekDay = element => {
+  const today = new Date();
+  const weekDay = today.getDay();
+
+  switch (weekDay) {
+    case 1: if (element.includes('Montag')) return element.replace('Montag: ', ''); break;
+    case 2: if (element.includes('Dienstag')) return element.replace('Dienstag: ', ''); break;
+    case 3: if (element.includes('Mittwoch')) return element.replace('Mittwoch: ', ''); break;
+    case 4: if (element.includes('Donnerstag')) return element.replace('Donnerstag: ', ''); break;
+    case 5: if (element.includes('Freitag')) return element.replace('Freitag: ', ''); break;
+    default: return element;
+  }
+};

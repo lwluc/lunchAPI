@@ -42,7 +42,7 @@ export function arrayToLinesMensaSpecial(array) {
   return result.substring(0, result.length - 1);
 }
 
-export function removeEmtpyElementsAndSpaces(lunch) {
+export function removeEmptyElementsAndSpaces(lunch) {
   lunch = lunch.filter(obj => obj && obj.food && obj.food.replace(/\s/g, '').length > 0 && obj.price);
     // && obj.price && obj.price.replace(/\s/g, '').length > 0);
 
