@@ -33,5 +33,5 @@ We use this API to load the daily lunch for our Slack-Lunchbot.
 [Try it out!](https://ka-lunch.de/)
 
 ## Authors
-Luc Weinbrecht @lwluc  
-Timo Schneider @tschneid
+Luc Weinbrecht @[lwluc](https://github.com/lwluc) 
+Timo Schneider @[tschneid](https://github.com/tschneid)
