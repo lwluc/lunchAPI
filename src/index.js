@@ -31,7 +31,8 @@ app.get('/', (req, res) => {
   const style = fs.readFileSync(__dirname + '/utils/readme-style.css');
   fs.readFile(__dirname + '/../README.md', 'utf-8', (err, data) => {
     if (err) throw err;
-    const readme = converter.makeHtml(data);
+    let readme = converter.makeHtml(data);
+    readme = readme.replace('href="src/lunch', 'href="https://github.com/lwluc/lunchAPI/tree/master/src/lunch');
     const html = `
       <html>
       <head>
