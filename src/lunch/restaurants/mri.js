@@ -15,7 +15,7 @@ export async function get() {
   return new Promise((resolve, reject) => {
     $('sup').replaceWith(' ');
     $('sub').replaceWith(' ');
-    const firstLine = replaceTadAndSetLineBreaks($('.views-row.views-row-1.views-row-odd.views-row-first').text()).replace(' ', '');
+    const firstLine = replaceTadAndSetLineBreaks($('.views-row.views-row-1.views-row-odd.views-row-first').text())
     const secondLine = replaceTadAndSetLineBreaks($('.views-row.views-row-2.views-row-even').text());
     const thirdLine = $('.views-row.views-row-3.views-row-odd.views-row-last').text().trim().replace(/(?:\r\n|\r|\n)/g, ' ').replace(/ +(?= )/g,',').replace(':, ',': ');
 

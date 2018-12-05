@@ -1,4 +1,4 @@
-import { getBody, nothingFound, removeEmptyElementsAndSpaces } from '../utils';
+import { getBody, nothingFound, removeEmptyElementsAndSpaces, emptyFood } from '../utils';
 import * as  cheerio from 'cheerio';
 import { logger, ERROR } from '../../utils/index';
 
@@ -22,7 +22,7 @@ export async function get() {
       price[i] = $(this).find('td[style="text-align: right;vertical-align:bottom;"]').find('span[class="bgp price_1"]').text();
     });
 
-    if (food.length === 0 || price.length === 0) return reject(nothingFound);
+    if (emptyFood(food) || price.length === 0) return reject(nothingFound);
 
     let res = [];
     food = food.forEach((el, index) => {

@@ -48,3 +48,7 @@ export function removeEmptyElementsAndSpaces(lunch) {
 
   return lunch.map(obj => obj = {food: obj.food.replace(/  +/g, ' ').trim(), price: obj.price.replace(/  +/g, ' ').trim() });  
 }
+
+export function emptyFood(food) {
+  return food.length === 0 || food.every(el => el.length <= 2);
+}
